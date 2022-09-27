@@ -45,7 +45,7 @@ def cipherText(string, key):
             else:
                 keyCounter = 0
         elif string[counter] == "\n" or string[counter] == "\t":
-            #cipher_text.append(string[counter])
+            cipher_text.append(string[counter])
             counter = counter + 1
         else:
             cipher_text.append(string[counter])
@@ -86,6 +86,7 @@ def originalText(cipher_text, key):
             else:
                 keyCounter = 0
         elif cipher_text[counter] == "\n" or cipher_text[counter] == "\t":
+            orig_text.append(cipher_text[counter])
             counter = counter + 1
         else:
             orig_text.append(cipher_text[counter])
@@ -96,19 +97,36 @@ def originalText(cipher_text, key):
 # Driver code
 def main():
     print("Input an HTML filename: ")
-    #filename = input()
-    #file = open(filename)
+    filename = input()
+    file = open(filename)
     file = open("practice.html")
-    print("Input how long you wabt the key to be")
-    #keyLength = input()
-    keyLength = 8
+    print("Input an integer for how long you want the key to be")
+    keyLength = int(input())
     string = ""
-    while file.readline() != "":
+    fileCharacter = "place holder"
+    while fileCharacter != "":
         fileCharacter = file.readline()
         string = string + fileCharacter
     file.close
     key = generateKey(keyLength)
     cipher_text = cipherText(string,key)
-    print("Ciphertext :", cipher_text)
-    print("Original/Decrypted Text :", originalText(cipher_text, key))
+    origonal_text = originalText(cipher_text, key)
+    encryptedFilename = ""
+    for character in filename:
+        if character == ".":
+            encryptedFilename = encryptedFilename + "_end."
+        else:
+            encryptedFilename = encryptedFilename + character
+    encryptedFile = open(encryptedFilename, "w")
+    encryptedFile.write(cipher_text)
+    encryptedFile.close
+    decryptedFilename = ""
+    for character in filename:
+        if character == ".":
+            decryptedFilename = decryptedFilename + "_dec."
+        else:
+            decryptedFilename = decryptedFilename + character
+    decryptedFile = open(decryptedFilename, "w")
+    decryptedFile.write(origonal_text)
+    decryptedFile.close
 main()
