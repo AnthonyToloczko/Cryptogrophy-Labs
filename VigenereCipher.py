@@ -11,7 +11,6 @@ def generateKey(keyLength):
         key.append(character)
         counter = counter + 1
     return ("".join(key))
-    
 
 # Encrypts the plain text
 def cipherText(filePath, keyFile):
@@ -133,7 +132,6 @@ def originalText(filePath_decrypt, keyFile):
     decryptedFile = open(decryptedFilename, "w")
     decryptedFile.write(decryptedString)
     decryptedFile.close()
-
 
 # Driver code
 def main():
