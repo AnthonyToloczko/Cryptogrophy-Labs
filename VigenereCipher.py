@@ -11,6 +11,7 @@ def generateKey(keyLength):
         key.append(character)
         counter = counter + 1
     return ("".join(key))
+    
 
 # Encrypts the plain text
 def cipherText(filePath, keyFile):
@@ -133,20 +134,56 @@ def originalText(filePath_decrypt, keyFile):
     decryptedFile.write(decryptedString)
     decryptedFile.close()
 
+
 # Driver code
 def main():
     print("Input a path to an HTML file: ")
-    filePath = input()
+    found = False
+    while not found:
+        try:
+            filePath = input()
+            pathTest = pathlib.Path(filePath)
+            fileTest = open(pathTest)
+            found = True
+        except:
+            print("Error, you entered an incorrect file path, please enter the correct path now: ")
+    fileTest.close()
     print("Input an integer for how long you want the key to be: ")
-    keyLength = int(input())
+    found = False
+    while not found:
+        try:
+            keyLength = int(input())
+            found = True
+        except:
+            print("Error, you did not enter an integer, please enter an integer this time: ")
+    fileTest.close()
     key = generateKey(keyLength)
     keyFile = open("fileKey", "w")
     keyFile.write(key)
     keyFile.close()
     keyFile = open("fileKey", "r")
     cipher_text = cipherText(filePath, keyFile)
-    print("Input the path to the encrypted HTML file: ")
-    filePath_decrypt = input()
+    print("Input the path to the encrypted HTML file for decryption: ")
+    testFilename = ""
+    for character in filePath:
+        if character == ".":
+            testFilename = testFilename + "_end."
+        else:
+            testFilename = testFilename + character
+    found = False
+    while not found:
+        try:
+            filePath_decrypt = input()
+            if pathlib.Path(filePath_decrypt) == (pathlib.Path(testFilename)):
+                pathTest = pathlib.Path(filePath_decrypt)
+                fileTest = open(pathTest)
+                found = True
+            else:
+                error = pathlib.Path("wrong_file")
+                fileTest = open(error)
+        except:
+            print("Error, you did not enter the file that was previously encrypted, please do so now: ")
+    fileTest.close()
     keyFile = open("fileKey", "r")
     origonal_text = originalText(filePath_decrypt, keyFile)
     keyFile.close()
