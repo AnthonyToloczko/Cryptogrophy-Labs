@@ -16,6 +16,7 @@ def gcd(m, n):
     q = ""
     r = "STOP"
     print(str(i) + " |\t" + q + "\t" + str(m) + "\t" + str(n) + "\t" + str(r))
+    return m
 
 def main():
     print("Enter the value you would like m to be: ")
