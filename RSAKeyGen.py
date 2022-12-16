@@ -3,23 +3,23 @@ import random
 
 def primeNumber():
     table = ""
-    binaryNumber = "1" # initializes binaryNumber with the starting bit that it should have
-    counter = 5 # creates a counter for the while loop to get the needed 5 bits
+    binaryNumber = "1"
+    counter = 5
     buffer = random.randint(1, 99)
-    randomSeed = (time.time()) - buffer # uses time as the pseudorandom seed
-    random.seed(randomSeed) # sets the seed of the built-in random generator to the new seed
+    randomSeed = (time.time()) - buffer
+    random.seed(randomSeed)
 
     while counter > 0:
-        randomNumber = bin(random.randint(0, 10000000000)) # chooses a random number between this range
-        randomBit = randomNumber[len(randomNumber) - 1] # takes the least significant bit
-        binaryNumber += randomBit # stores it with the other bits
-        table += ("b_" + str(counter) + "|" + str(randomNumber).replace("0b", "") + "|" + str(randomBit) + "\n") # displays the trace
-        counter -= 1 # updates the counter
+        randomNumber = bin(random.randint(0, 10000000000))
+        randomBit = randomNumber[len(randomNumber) - 1]
+        binaryNumber += randomBit
+        table += ("b_" + str(counter) + "|" + str(randomNumber).replace("0b", "") + "|" + str(randomBit) + "\n")
+        counter -= 1
 
-    binaryNumber += "1" # gives the binary number the last bit that we know it must have
-    regularNumber = int(binaryNumber, 2) # converts the binary to a regular number
-    binaryNumber = "{:032b}".format(regularNumber) # turns the binary number from 7 bits into 32 bits (25 leading 0's)
-    table = table + ("Number|" + str(regularNumber) + "|" + str(binaryNumber) +"\n") # displays the number and it's trace
+    binaryNumber += "1"
+    regularNumber = int(binaryNumber, 2)
+    binaryNumber = "{:032b}".format(regularNumber)
+    table = table + ("Number|" + str(regularNumber) + "|" + str(binaryNumber) +"\n")
     return regularNumber, table
 
 def primalityTest(x, n):
@@ -34,7 +34,7 @@ def primalityTest(x, n):
         y = (y * y) % n
         if y == 1 and z != 1 and z != e:
             table += (str(i) + " |\t" + bin(e)[2:][i] + " \t|\t" + str(z) + "\t|\t" + str(y) + "\t|\t" + str((y * x) % n) + "\n")
-            table += (str(n) + " is not prime\n")
+            table += ("\n" + str(n) + " is not prime\n")
             return False, table
         if int(bin(e)[2:][i]) == 1:
             table += (str(i) + " |\t" + bin(e)[2:][i] + " \t|\t" + str(z) + "\t|\t" + str(y) + "\t|\t" + str((y * x) % n) + "\n")
@@ -59,7 +59,7 @@ def extendedEuclid(m, n):
             nSwap = m
             m = n
             n = nSwap
-    mod = m
+    oldMod = m
     while n != 0:
         q = int(m / n)
         qNumbers.append(q)
@@ -80,7 +80,7 @@ def extendedEuclid(m, n):
     r = ""
     table += (str(i) + " |\t" + str(q) + "\t|\t" + str(m) + "\t|\t" + str(n) + "\t|\t" + str(r) + "\t|\t" + str(s[i-1]) + "\t|\t" + str(t[i-1]) + "\n")
     if t[i-1] < 0:
-        t[i-1] = t[i-1] + mod
+        t[i-1] = t[i-1] + oldMod
     print(table)
     return t[i-1], m
 
@@ -106,6 +106,10 @@ def main():
             q = primeNumber()
             q = q[0]
             counter = -1
+        if p == q:
+            q = primeNumber()
+            q = q[0]
+            counter = -1
         counter += 1
     traces += firstResult[1]
     randomNumber = random.randint(1, 44)
@@ -113,21 +117,20 @@ def main():
     traces += nonPrimeProof[1]
     e = 3
     n = p*q
-    traces += "\ne = " + str(e) + "\n"
+    traces += "\ne=" + str(e) + "\n"
     print(traces)
     euclid = extendedEuclid(e, n)
     d = euclid[0]
-    while (euclid[1] % n) != 1:
+    while euclid[1] % n != 1:
         e += 1
-        print("e = " + str(e) + "\n")
+        print("\ne=" + str(e) + "\n")
         euclid = extendedEuclid(e, n)
         d = euclid[0]
-    print("d = " + str(d) + "\n")
-    print("p = " + str(p) + ", q = " + str(q) + ", n = " + str(n) + ", e = " + str(e) + ", d = " + str(d))
+    print("d=" + str(d) + "\n")
+    print("p=" + str(p) + ", q=" + str(q) + ", n=" + str(n) + ", e=" + str(e) + ", d=" + str(d))
     print("{:032b}".format(p))
     print("{:032b}".format(q))
     print("{:032b}".format(n))
     print("{:032b}".format(e))
     print("{:032b}".format(d))
-
 main()
